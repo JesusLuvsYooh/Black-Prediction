@@ -1,5 +1,5 @@
 # Black Prediction
-This is a client side prediction and server reconciliation plugin for Mirror Networking. It is a completely server authoritative movement solution.
+This is a client side prediction and server reconciliation plugin for Mirror. It is a completely server authoritative movement solution.
 
 Download Unity Package: https://github.com/bluejayboy/Black-Prediction/releases
 
@@ -47,5 +47,6 @@ No promises.
 - Add Rigidbody support.
 - Add editor helper so the user does not need to edit the scripts directly. 
 - Add performance checks to save bandwidth.
+- Support non-mirror networking solutions.
 
 uwu
