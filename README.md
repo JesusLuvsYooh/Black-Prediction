@@ -37,7 +37,7 @@ Buy KCC: https://assetstore.unity.com/packages/tools/physics/kinematic-character
 # Known Issue
 - Rotation seems to be completely messed up using the default Unity controller. This is being looked into.
 
-# TODO
+# To Do
 No promises.
 
 - Add custom network time and frame management.
