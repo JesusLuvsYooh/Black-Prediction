@@ -7,7 +7,7 @@ Download Unity Package: https://github.com/bluejayboy/Black-Prediction/releases
 - Client side prediction.
 - Server reconciliation.
 - Only rolls back states when there is a mismatch between client and server states.
-- Once a mismatch occurs, the client applies that state and replays the inputs starting after that state's frame. All old inputs before that get discarded.
+- Once a mismatch occurs, the client applies that state to the controller and replays the inputs starting after that state's frame. All old inputs before that get discarded.
 - Simulates all controllers in one frame and a single input per frame.
 - Speedhack proof.
 - Supports both default Unity CC and KCC.
