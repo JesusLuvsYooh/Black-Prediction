@@ -36,7 +36,7 @@ Buy KCC: https://assetstore.unity.com/packages/tools/physics/kinematic-character
 - Play and test how it works.
 
 # Known Issue
-- Rotation seems to be completely messed up using the default Unity controller. This is being looked into.
+- Rotation appears to be completely messed up when using the default Unity controller. This is being looked into.
 
 # To Do
 No promises.
