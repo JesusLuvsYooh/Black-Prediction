@@ -25,7 +25,10 @@ namespace Black.ClientSidePrediction.Example
         public override void OnStartAuthority()
         {
             // Disable networktransform to prevent owner from getting sync replication from it's own transform. Normally this shouldn't happen even if it's enabled?
-            GetComponent<NetworkTransform>().enabled = false;
+            if (!isServer)
+            {
+                GetComponent<NetworkTransform>().enabled = false;
+            }
         }
 
         protected override ClientInput GetInput()
@@ -42,7 +45,7 @@ namespace Black.ClientSidePrediction.Example
 
         public override void SetInput(ClientInput input)
         {
-            moveInput =  transform.right * input.Horizontal + transform.forward * input.Vertical;
+            moveInput = transform.right * input.Horizontal + transform.forward * input.Vertical;
             pressedJump = input.Jump;
         }
 
@@ -70,32 +73,14 @@ namespace Black.ClientSidePrediction.Example
 
         public override void ApplyPhysics()
         {
-            CheckGround();
-            Jump();
-            Gravity();
-            Move();
-        }
-
-        private void CheckGround()
-        {
             isGrounded = Physics.CheckSphere(transform.localPosition, groundDistance, groundLayer);
-        }
 
-        private void Jump()
-        {
             if (pressedJump && isGrounded)
             {
                 velocity.y = jump;
             }
-        }
 
-        private void Gravity()
-        {
             velocity.y += gravity * Time.fixedDeltaTime;
-        }
-
-        private void Move()
-        {
             velocity = new Vector3(moveInput.x * speed, velocity.y, moveInput.z * speed);
 
             controller.Move(velocity * Time.fixedDeltaTime);
