@@ -4,7 +4,7 @@ namespace Black.ClientSidePrediction
 {
     public struct ClientInput
     {
-        public ulong TimeFrame;
+        public ulong Frame;
 
         // Add your inputs here.
         public float Horizontal;
@@ -14,7 +14,8 @@ namespace Black.ClientSidePrediction
 
     public struct ServerResult
     {
-        public ulong TimeFrame;
+        public ulong Frame;
+        public byte Buffer;
 
         // Add your results here.
         public Vector3 Position;

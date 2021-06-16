@@ -331,12 +331,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wrap: {fileID: 221458102}
-  latencySpikeMultiplier: 0.3
-  latencySpikeSpeedMultiplier: 2
-  reliableLatency: 2
-  unreliableLoss: 0.1
-  unreliableLatency: 2
-  unreliableScramble: 0.2
+  latencySpikeMultiplier: 0.02
+  latencySpikeSpeedMultiplier: 0.2
+  reliableLatency: 0.2
+  unreliableLoss: 0.02
+  unreliableLatency: 0.2
+  unreliableScramble: 0.02
 --- !u!1 &266840868
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,6 +543,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  updateRate: 60
 --- !u!114 &710713270
 MonoBehaviour:
   m_ObjectHideFlags: 0

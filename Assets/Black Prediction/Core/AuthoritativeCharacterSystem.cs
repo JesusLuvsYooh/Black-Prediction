@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using Black.Utility;
 
 namespace Black.ClientSidePrediction
 {
@@ -9,18 +10,23 @@ namespace Black.ClientSidePrediction
     {
         public static AuthoritativeCharacterSystem Instance { get; private set; }
 
+        [SerializeField] private byte updateRate = 60;
+        public byte UpdateRate => updateRate;
+
         private List<AuthoritativeCharacterMotor> motors = new List<AuthoritativeCharacterMotor>();
         private Dictionary<NetworkConnection, List<ClientInput>> clientInputs = new Dictionary<NetworkConnection, List<ClientInput>>();
 
         private void Awake()
         {
             Instance = this;
+
+            BlackUtility.ApplyFixedTimestep(updateRate);
         }
 
         [ServerCallback]
         private void FixedUpdate()
         {
-            SimulateClients();
+            SimulateAllMotors();
         }
 
         [Command(requiresAuthority = false)]
@@ -53,34 +59,49 @@ namespace Black.ClientSidePrediction
             }
         }
 
-        private void SimulateClients()
+        private void SimulateAllMotors()
         {
             for (int i = 0; i < motors.Count; i++)
             {
-                ApplyInput(motors[i]);
-                motors[i].ApplyPhysics();
-                ApplyResult(motors[i]);
+                AuthoritativeCharacterMotor motor = motors[i];
+                NetworkConnection connection = motor.connectionToClient;
+
+                if (!clientInputs.ContainsKey(connection))
+                {
+                    continue;
+                }
+
+                List<ClientInput> inputs = clientInputs[connection];
+
+                ApplyInput(motor, inputs);
+                motor.ApplyPhysics();
+                ApplyResult(motor, inputs);
             }
         }
 
-        private void ApplyInput(AuthoritativeCharacterMotor motor)
+        private void ApplyInput(AuthoritativeCharacterMotor motor, List<ClientInput> inputs)
         {
-            if (clientInputs.ContainsKey(motor.connectionToClient) && clientInputs[motor.connectionToClient].Count > 0)
+            if (inputs.Count <= 0)
             {
-                motor.SetInput(clientInputs[motor.connectionToClient][0]);
+                return;
             }
+
+            motor.SetInput(inputs[0]);
         }
 
-        private void ApplyResult(AuthoritativeCharacterMotor motor)
+        private void ApplyResult(AuthoritativeCharacterMotor motor, List<ClientInput> inputs)
         {
-            if (clientInputs.ContainsKey(motor.connectionToClient) && clientInputs[motor.connectionToClient].Count > 0)
+            if (inputs.Count <= 0)
             {
-                ServerResult result = motor.GetResult();
-                result.TimeFrame = clientInputs[motor.connectionToClient][0].TimeFrame;
-
-                clientInputs[motor.connectionToClient].RemoveAt(0);
-                motor.SendResultToClient(result);
+                return;
             }
+
+            ServerResult result = motor.GetResult();
+            result.Frame = inputs[0].Frame;
+            result.Buffer = (byte)inputs.Count;
+
+            inputs.RemoveAt(0);
+            motor.SendResultToClient(result);
         }
     }
 }

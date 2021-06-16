@@ -1,20 +1,19 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using Black.Utility;
 
 namespace Black.ClientSidePrediction
 {
     [DisallowMultipleComponent]
     public abstract class AuthoritativeCharacterMotor : NetworkBehaviour
     {
-        private ulong inputFrame;
-        private bool isMismatch;
+        [SerializeField] private byte defaultBuffer = 2;
 
+        private ulong currentFrame;
         private ClientInput currentInput;
         private ServerResult currentResult;
-
         private List<ClientInput> inputs = new List<ClientInput>();
-        private List<ServerResult> results = new List<ServerResult>();
 
         protected abstract ClientInput GetInput();
         public abstract void SetInput(ClientInput input);
@@ -45,12 +44,12 @@ namespace Black.ClientSidePrediction
                 return;
             }
 
-            inputFrame++;
+            currentFrame++;
 
+            BufferInput();
             CreateInput();
-            Reconciliate();
-            Predict();
-            CreateResult();
+            ReconciliateState();
+            PredictMovement();
 
             AuthoritativeCharacterSystem.Instance.SendInputToServer(currentInput);
         }
@@ -61,43 +60,43 @@ namespace Black.ClientSidePrediction
             currentResult = result;
         }
 
+        private void BufferInput()
+        {
+            float updateRate = AuthoritativeCharacterSystem.Instance.UpdateRate;
+            byte pingBuffer = (byte)(NetworkTime.rtt / 2 * updateRate);
+            byte targetBuffer = (byte)(defaultBuffer + pingBuffer);
+
+            if (currentResult.Buffer > targetBuffer)
+            {
+                BlackUtility.ApplyFixedTimestep(updateRate - 10);
+            }
+            else if (currentResult.Buffer < targetBuffer)
+            {
+                BlackUtility.ApplyFixedTimestep(updateRate + 10);
+            }
+            else
+            {
+                BlackUtility.ApplyFixedTimestep(updateRate);
+            }
+        }
+
         private void CreateInput()
         {
             currentInput = GetInput();
-            currentInput.TimeFrame = inputFrame;
+            currentInput.Frame = currentFrame;
         }
 
-        private void CreateResult()
+        private void ReconciliateState()
         {
             if (isServer)
             {
                 return;
             }
 
-            ServerResult result = GetResult();
-            result.TimeFrame = inputFrame;
-
-            results.RemoveAll(IsObsoleteResult);
-            results.Add(result);
+            SetResult(currentResult);
         }
 
-        private void Reconciliate()
-        {
-            if (isServer)
-            {
-                return;
-            }
-
-            ServerResult sameResult = results.Find(IsSameTimeFrame);
-            isMismatch = !sameResult.Equals(currentResult);
-
-            if (isMismatch)
-            {
-                SetResult(currentResult);
-            }
-        }
-
-        private void Predict()
+        private void PredictMovement()
         {
             if (isServer)
             {
@@ -107,34 +106,16 @@ namespace Black.ClientSidePrediction
             inputs.RemoveAll(IsObsoleteInput);
             inputs.Add(currentInput);
 
-            if (isMismatch)
+            for (int i = 0; i < inputs.Count; i++)
             {
-                for (int i = 0; i < inputs.Count; i++)
-                {
-                    SetInput(inputs[i]);
-                    ApplyPhysics();
-                }
-            }
-            else
-            {
-                SetInput(currentInput);
+                SetInput(inputs[i]);
                 ApplyPhysics();
             }
         }
 
         private bool IsObsoleteInput(ClientInput input)
         {
-            return input.TimeFrame <= currentResult.TimeFrame;
-        }
-
-        private bool IsObsoleteResult(ServerResult result)
-        {
-            return result.TimeFrame < currentResult.TimeFrame;
-        }
-
-        private bool IsSameTimeFrame(ServerResult result)
-        {
-            return result.TimeFrame == currentResult.TimeFrame;
+            return input.Frame <= currentResult.Frame;
         }
     }
 }
