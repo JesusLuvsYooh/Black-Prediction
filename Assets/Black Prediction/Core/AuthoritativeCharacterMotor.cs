@@ -62,6 +62,11 @@ namespace Black.ClientSidePrediction
 
         private void BufferInput()
         {
+            if (isServer)
+            {
+                return;
+            }
+
             float updateRate = AuthoritativeCharacterSystem.Instance.UpdateRate;
             byte pingBuffer = (byte)(NetworkTime.rtt / 2 * updateRate);
             byte targetBuffer = (byte)(defaultBuffer + pingBuffer);
