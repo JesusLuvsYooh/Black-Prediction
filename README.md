@@ -38,12 +38,10 @@ Download Unity Package: https://github.com/bluejayboy/Black-Prediction/releases
 # To Do
 No promises.
 
-- Add custom network time and frame management.
-- Add interpolation for reconciliation.
-- Add first person view.
-- Make it rotate properly. The default Unity controller is not great at handling positional and rotational data.
-- Add Rigidbody support.
+- Add first person view and rotation.
+- Add Rigidbody/KCC example.
 - Add editor helper so the user does not need to edit the scripts directly. 
+- Add interpolation for reconciliation.
 - Add performance checks to save bandwidth.
 - Support non-mirror networking solutions.
 
