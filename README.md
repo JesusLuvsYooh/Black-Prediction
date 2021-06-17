@@ -11,11 +11,11 @@ Download Unity Package: https://github.com/bluejayboy/Black-Prediction/releases
 - Supports both default Unity CC and KCC.
 
 # How It Works
-- The client collects inputs, stores them, applies them to the controller to predict movement.
-- The client then sends the input data to the server.
-- The server simulates all controllers in one frame and a single input per frame.
-- The server sends the physics result to the client.
-- The client applies most recent state from the server and replays the inputs starting after that state's frame to reconciliate movement. All old inputs before that get discarded.
+- The client collects inputs, stores them in a list, and applies them to the controller to predict movement.
+- The client sends the movement input data to the server.
+- The server simulates every controller with the first input in a single frame.
+- The server sends the movement result data to the client and discards the used input.
+- The client applies most recent result from the server and replays the inputs starting after that result's frame to reconciliate movement. All old inputs that come before the result's frame get discarded.
 
 # Quick Start
 - Create a build.
