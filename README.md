@@ -7,36 +7,33 @@ Download Unity Package: https://github.com/bluejayboy/Black-Prediction/releases
 - Client side prediction.
 - Server reconciliation.
 - Input buffer.
-- Speedhack proof.
-- The client applies most recent state from the server and replays the inputs starting after that state's frame. All old inputs before that get discarded.
-- The server simulates all controllers in one frame and a single input per frame.
+- Speedhack prevention.
 - Supports both default Unity CC and KCC.
 
-# Disclaimer
-KCC is a paid asset, so I can not include the files for it directly but the example for it might be added soon.
-
-Buy KCC: https://assetstore.unity.com/packages/tools/physics/kinematic-character-controller-99131
+# How It Works
+- The client collects inputs, stores them, applies them to the controller to predict movement.
+- The client then sends the input data to the server.
+- The server simulates all controllers in one frame and a single input per frame.
+- The server sends the physics result to the client.
+- The client applies most recent state from the server and replays the inputs starting after that state's frame to reconciliate movement. All old inputs before that get discarded.
 
 # Quick Start
-- Make a build.
-- Host from the build and join as a client inside the editor.
-- Start moving around on the client. Notice how it is very smooth.
-- Modify the client's player prefab and change the speed for movement and jump.
+- Create a build.
+- Host inside the build and join as client inside the editor.
+- Move around on the client to try out prediction and reconciliation.
+- Modify the client's player prefab and alter the speed for movement and jump.
 - Realize that it gets snapped back to the position that it belongs to according to the server.
-- Add the latency simulation script inside of the NetworkManager transport field to see how it works through latency.
+- Drag the latency simulation script inside of the NetworkManager Transport field to see how it works through latency.
 
 # Tutorial
-- Open AuthoritativeCharacterData.cs
-- Add in desired player inputs inside of the ClientInput struct and desired player physics results inside of the ServerResult struct.
-- DO NOT edit AuthoritativeCharacterMotor.cs and AuthoritativeCharacterSystem.cs unless you know what you are doing.
-- Create your player movement script and make it derive from the AuthoritativeCharacterMotor.cs script.
+- Open AuthoritativeCharacterData.cs script.
+- Add in desired movement inputs inside of ClientInput struct and results inside of ServerResult struct.
+- Do not edit AuthoritativeCharacterMotor.cs and AuthoritativeCharacterSystem.cs scripts unless you know what you are doing.
+- Create your player movement script and have it derive from AuthoritativeCharacterMotor.cs script.
 - Add all the required function overrides and follow ExampleCharacterController.cs inside the example folder to see how it should be implemented.
-- Make your own player prefab for it, add Network Identity, NetworkTransform, and your playerMovement script on it, and then throw it in the NetworkManager script in the start scene.
-- Make a new GameObject in your game scene with NetworkIdentity and AuthoritativeCharacterSystem script on it.
-- Play and test how it works.
-
-# Known Issue
-- Rotation appears to be completely messed up when using the default Unity controller. This is being looked into.
+- Create your own player prefab. Add Network Identity, NetworkTransform, and your newly created playerMovement script to it. Go to your start scene and drop it in the NetworkManager Player Prefab field.
+- Create a new GameObject in your game scene with NetworkIdentity and AuthoritativeCharacterSystem script attached to it.
+- Create a build and test how it works.
 
 # To Do
 No promises.
