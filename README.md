@@ -7,7 +7,7 @@ Download Unity Package: https://github.com/bluejayboy/Black-Prediction/releases
 - Client side prediction.
 - Server reconciliation.
 - Input buffer.
-- Speedhack prevention.
+- Speed exploit prevention.
 - Supports both default Unity CC and KCC.
 
 # How It Works
