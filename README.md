@@ -15,7 +15,7 @@ Download Unity Package: https://github.com/bluejayboy/Black-Prediction/releases
 - The client sends the movement input data to the server.
 - The server simulates every controller with the first input in a single frame.
 - The server sends the movement result data to the client and discards the used input.
-- The client applies most recent result from the server to reconciliate movement and then reapply inputs starting after that result's frame to again predict where it should be. - All old inputs that come before get discarded as they are not needed anymore.
+- The client applies most recent result from the server to reconciliate movement and then reapply inputs starting after that result's frame to again predict where it should be. All old inputs that come before get discarded as they are not needed anymore.
 
 # Quick Start
 - Create a build.
