@@ -3,6 +3,13 @@ This is a client side prediction and server reconciliation plugin for Mirror. It
 
 Download Unity Package: https://github.com/bluejayboy/Black-Prediction/releases
 
+# Introduction
+- Client side prediction allows the player to instantly simulate their movement without having to wait for the server to give movement results.
+- Server reconciliation snaps the player back to the area that it should be. This is to prevent desync and cheating.
+- The server's simulation is the real movement and the client's simulation is merely just a fake replica to instantly predict where the player should be.
+- Input buffering allows the player to be ahead of the server in a fixed amount of frames by catching up or slowing down physics rate in order to prevent the client from being way ahead or behind the server's simulation time.
+- Clients cannot exploit their speed by spamming inputs in this system due to the fact that the server only runs one input for each controller in the same frame.
+
 # Feature
 - Client side prediction.
 - Server reconciliation.
