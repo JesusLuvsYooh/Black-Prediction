@@ -3,19 +3,26 @@ This is a client side prediction and server reconciliation plugin for Mirror. It
 
 Download Unity Package: https://github.com/bluejayboy/Black-Prediction/releases
 
+# Introduction
+- Client side prediction allows the player to instantly simulate their movement without having to wait for the server to give movement results.
+- Server reconciliation snaps the player back to the area that it should be. This is to prevent desync and cheating.
+- The server's simulation is the real movement and the client's simulation is merely just a fake replica to instantly predict where the player should be.
+- Input buffering allows the player to be ahead of the server in a fixed amount of frames by catching up or slowing down physics rate in order to prevent the client from being way ahead or behind the server's simulation time.
+- Clients cannot exploit their speed by spamming inputs in this system due to the fact that the server only runs one input for each controller in the same frame.
+
 # Feature
 - Client side prediction.
 - Server reconciliation.
 - Input buffer.
-- Speedhack prevention.
+- Speed exploit prevention.
 - Supports both default Unity CC and KCC.
 
 # How It Works
-- The client collects inputs, stores them, applies them to the controller to predict movement.
-- The client then sends the input data to the server.
-- The server simulates all controllers in one frame and a single input per frame.
-- The server sends the physics result to the client.
-- The client applies most recent state from the server and replays the inputs starting after that state's frame to reconciliate movement. All old inputs before that get discarded.
+- The client collects inputs, stores them in a list, and applies them to the controller to predict movement.
+- The client sends the movement input data to the server.
+- The server simulates every controller with the first input in a single frame.
+- The server sends the movement result data to the client and discards the used input.
+- The client applies most recent result from the server to reconciliate movement and then reapply inputs starting after that result's frame to again predict where it should be. All old inputs that come before get discarded as they are not needed anymore.
 
 # Quick Start
 - Create a build.
