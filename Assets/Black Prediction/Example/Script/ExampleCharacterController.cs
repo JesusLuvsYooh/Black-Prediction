@@ -71,7 +71,7 @@ namespace Black.ClientSidePrediction.Example
             isGrounded = result.IsGrounded;
         }
 
-        public override void ApplyPhysics()
+        public override void ApplyMovement()
         {
             isGrounded = Physics.CheckSphere(transform.localPosition, groundDistance, groundLayer);
 

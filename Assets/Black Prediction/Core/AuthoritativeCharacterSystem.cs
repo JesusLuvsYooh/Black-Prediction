@@ -26,7 +26,7 @@ namespace Black.ClientSidePrediction
         [ServerCallback]
         private void FixedUpdate()
         {
-            SimulateAllMotors();
+            SimulateEveryMotor();
         }
 
         [Command(requiresAuthority = false)]
@@ -59,7 +59,7 @@ namespace Black.ClientSidePrediction
             }
         }
 
-        private void SimulateAllMotors()
+        private void SimulateEveryMotor()
         {
             for (int i = 0; i < motors.Count; i++)
             {
@@ -74,7 +74,7 @@ namespace Black.ClientSidePrediction
                 List<ClientInput> inputs = clientInputs[connection];
 
                 ApplyInput(motor, inputs);
-                motor.ApplyPhysics();
+                motor.ApplyMovement();
                 ApplyResult(motor, inputs);
             }
         }

@@ -9,6 +9,7 @@ namespace Black.ClientSidePrediction
     public abstract class AuthoritativeCharacterMotor : NetworkBehaviour
     {
         [SerializeField] private byte defaultBuffer = 2;
+        [SerializeField] private byte bufferSpeed = 5;
 
         private ulong currentFrame;
         private ClientInput currentInput;
@@ -19,7 +20,7 @@ namespace Black.ClientSidePrediction
         public abstract void SetInput(ClientInput input);
         public abstract ServerResult GetResult();
         protected abstract void SetResult(ServerResult result);
-        public abstract void ApplyPhysics();
+        public abstract void ApplyMovement();
 
         protected virtual void Start()
         {
@@ -67,17 +68,17 @@ namespace Black.ClientSidePrediction
                 return;
             }
 
-            float updateRate = AuthoritativeCharacterSystem.Instance.UpdateRate;
-            byte pingBuffer = (byte)(NetworkTime.rtt / 2 * updateRate);
-            byte targetBuffer = (byte)(defaultBuffer + pingBuffer);
+            byte updateRate = AuthoritativeCharacterSystem.Instance.UpdateRate;
+            var pingBuffer = (byte)(NetworkTime.rtt / 2 * updateRate);
+            var targetBuffer = (byte)(defaultBuffer + pingBuffer);
 
             if (currentResult.Buffer > targetBuffer)
             {
-                BlackUtility.ApplyFixedTimestep(updateRate - 10);
+                BlackUtility.ApplyFixedTimestep(updateRate - bufferSpeed);
             }
             else if (currentResult.Buffer < targetBuffer)
             {
-                BlackUtility.ApplyFixedTimestep(updateRate + 10);
+                BlackUtility.ApplyFixedTimestep(updateRate + bufferSpeed);
             }
             else
             {
@@ -114,7 +115,7 @@ namespace Black.ClientSidePrediction
             for (int i = 0; i < inputs.Count; i++)
             {
                 SetInput(inputs[i]);
-                ApplyPhysics();
+                ApplyMovement();
             }
         }
 
