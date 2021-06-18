@@ -43,13 +43,9 @@ Download Unity Package: https://github.com/bluejayboy/Black-Prediction/releases
 - Create a build and test how it works.
 
 # To Do
-No promises.
-
 - Add first person view and rotation.
 - Add Rigidbody/KCC example.
 - Add editor helper so the user does not need to edit the scripts directly. 
 - Add interpolation for reconciliation.
 - Add performance checks to save bandwidth.
 - Support non-mirror networking solutions.
-
-uwu
