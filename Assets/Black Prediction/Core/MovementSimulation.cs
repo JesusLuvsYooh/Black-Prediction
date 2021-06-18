@@ -6,14 +6,14 @@ using Black.Utility;
 namespace Black.ClientSidePrediction
 {
     [DisallowMultipleComponent]
-    public sealed class AuthoritativeCharacterSystem : NetworkBehaviour
+    public sealed class MovementSimulation : NetworkBehaviour
     {
-        public static AuthoritativeCharacterSystem Instance { get; private set; }
+        public static MovementSimulation Instance { get; private set; }
 
         [SerializeField] private byte updateRate = 60;
         public byte UpdateRate => updateRate;
 
-        private List<AuthoritativeCharacterMotor> motors = new List<AuthoritativeCharacterMotor>();
+        private List<MovementEntity> entities = new List<MovementEntity>();
         private Dictionary<NetworkConnection, List<ClientInput>> clientInputs = new Dictionary<NetworkConnection, List<ClientInput>>();
 
         private void Awake()
@@ -26,7 +26,7 @@ namespace Black.ClientSidePrediction
         [ServerCallback]
         private void FixedUpdate()
         {
-            SimulateEveryMotor();
+            SimulateEveryEntity();
         }
 
         [Command(requiresAuthority = false)]
@@ -38,11 +38,11 @@ namespace Black.ClientSidePrediction
             }
         }
 
-        public void AddMotor(NetworkConnection conn, AuthoritativeCharacterMotor motor)
+        public void AddEntity(NetworkConnection conn, MovementEntity entity)
         {
-            if (!motors.Contains(motor))
+            if (!entities.Contains(entity))
             {
-                motors.Add(motor);
+                entities.Add(entity);
             }
 
             if (!clientInputs.ContainsKey(conn))
@@ -51,20 +51,20 @@ namespace Black.ClientSidePrediction
             }
         }
 
-        public void RemoveMotor(AuthoritativeCharacterMotor motor)
+        public void RemoveEntity(MovementEntity entity)
         {
-            if (motors.Contains(motor))
+            if (entities.Contains(entity))
             {
-                motors.Remove(motor);
+                entities.Remove(entity);
             }
         }
 
-        private void SimulateEveryMotor()
+        private void SimulateEveryEntity()
         {
-            for (int i = 0; i < motors.Count; i++)
+            for (int i = 0; i < entities.Count; i++)
             {
-                AuthoritativeCharacterMotor motor = motors[i];
-                NetworkConnection connection = motor.connectionToClient;
+                MovementEntity entity = entities[i];
+                NetworkConnection connection = entity.connectionToClient;
 
                 if (!clientInputs.ContainsKey(connection))
                 {
@@ -73,35 +73,35 @@ namespace Black.ClientSidePrediction
 
                 List<ClientInput> inputs = clientInputs[connection];
 
-                ApplyInput(motor, inputs);
-                motor.ApplyMovement();
-                ApplyResult(motor, inputs);
+                ApplyInput(entity, inputs);
+                entity.ApplyMovement();
+                ApplyResult(entity, inputs);
             }
         }
 
-        private void ApplyInput(AuthoritativeCharacterMotor motor, List<ClientInput> inputs)
+        private void ApplyInput(MovementEntity entity, List<ClientInput> inputs)
         {
             if (inputs.Count <= 0)
             {
                 return;
             }
 
-            motor.SetInput(inputs[0]);
+            entity.SetInput(inputs[0]);
         }
 
-        private void ApplyResult(AuthoritativeCharacterMotor motor, List<ClientInput> inputs)
+        private void ApplyResult(MovementEntity entity, List<ClientInput> inputs)
         {
             if (inputs.Count <= 0)
             {
                 return;
             }
 
-            ServerResult result = motor.GetResult();
+            ServerResult result = entity.GetResult();
             result.Frame = inputs[0].Frame;
             result.Buffer = (byte)inputs.Count;
 
             inputs.RemoveAt(0);
-            motor.SendResultToClient(result);
+            entity.SendResultToClient(result);
         }
     }
 }

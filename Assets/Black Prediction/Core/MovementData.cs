@@ -9,6 +9,7 @@ namespace Black.ClientSidePrediction
         // Add your inputs here.
         public float Horizontal;
         public float Vertical;
+        public float Yaw;
         public bool Jump;
     }
 

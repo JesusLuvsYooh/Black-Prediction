@@ -6,7 +6,7 @@ using Black.Utility;
 namespace Black.ClientSidePrediction
 {
     [DisallowMultipleComponent]
-    public abstract class AuthoritativeCharacterMotor : NetworkBehaviour
+    public abstract class MovementEntity : NetworkBehaviour
     {
         [SerializeField] private byte defaultBuffer = 2;
         [SerializeField] private byte bufferSpeed = 5;
@@ -24,23 +24,23 @@ namespace Black.ClientSidePrediction
 
         protected virtual void Start()
         {
-            if (NetworkServer.active && AuthoritativeCharacterSystem.Instance != null)
+            if (NetworkServer.active && MovementSimulation.Instance != null)
             {
-                AuthoritativeCharacterSystem.Instance.AddMotor(connectionToClient, this);
+                MovementSimulation.Instance.AddEntity(connectionToClient, this);
             }
         }
 
         protected virtual void OnDestroy()
         {
-            if (NetworkServer.active && AuthoritativeCharacterSystem.Instance != null)
+            if (NetworkServer.active && MovementSimulation.Instance != null)
             {
-                AuthoritativeCharacterSystem.Instance.RemoveMotor(this);
+                MovementSimulation.Instance.RemoveEntity(this);
             }
         }
 
         protected virtual void FixedUpdate()
         {
-            if (!hasAuthority || AuthoritativeCharacterSystem.Instance == null)
+            if (!hasAuthority || MovementSimulation.Instance == null)
             {
                 return;
             }
@@ -52,7 +52,7 @@ namespace Black.ClientSidePrediction
             ReconciliateState();
             PredictMovement();
 
-            AuthoritativeCharacterSystem.Instance.SendInputToServer(currentInput);
+            MovementSimulation.Instance.SendInputToServer(currentInput);
         }
 
         [TargetRpc]
@@ -68,7 +68,7 @@ namespace Black.ClientSidePrediction
                 return;
             }
 
-            byte updateRate = AuthoritativeCharacterSystem.Instance.UpdateRate;
+            byte updateRate = MovementSimulation.Instance.UpdateRate;
             var pingBuffer = (byte)(NetworkTime.rtt / 2 * updateRate);
             var targetBuffer = (byte)(defaultBuffer + pingBuffer);
 

@@ -5,18 +5,21 @@ namespace Black.ClientSidePrediction.Example
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(CharacterController))]
-    public sealed class ExampleCharacterController : AuthoritativeCharacterMotor
+    public sealed class ExampleMovement : MovementEntity
     {
-        [SerializeField] private CharacterController controller;
+        [SerializeField] private CharacterController cc;
+        [SerializeField] private ExampleCamera cam;
+        [SerializeField] private GameObject body;
 
-        [SerializeField] private float speed = 10;
-        [SerializeField] private float jump = 10;
+        [SerializeField] private float moveSpeed = 10;
+        [SerializeField] private float jumpSpeed = 10;
         [SerializeField] private float gravity = -30;
 
         [SerializeField] private float groundDistance = 0.5f;
         [SerializeField] private LayerMask groundLayer;
 
-        private Vector3 moveInput;
+        private Vector3 move;
+        private float yaw;
         private bool pressedJump;
 
         private Vector3 velocity;
@@ -24,7 +27,9 @@ namespace Black.ClientSidePrediction.Example
 
         public override void OnStartAuthority()
         {
-            // Disable networktransform to prevent owner from getting sync replication from it's own transform. Normally this shouldn't happen even if it's enabled?
+            cam.gameObject.SetActive(true);
+            body.SetActive(false);
+
             if (!isServer)
             {
                 GetComponent<NetworkTransform>().enabled = false;
@@ -37,6 +42,7 @@ namespace Black.ClientSidePrediction.Example
             {
                 Horizontal = Input.GetAxisRaw("Horizontal"),
                 Vertical = Input.GetAxisRaw("Vertical"),
+                Yaw = cam.Yaw,
                 Jump = Input.GetKey(KeyCode.Space)
             };
 
@@ -45,7 +51,8 @@ namespace Black.ClientSidePrediction.Example
 
         public override void SetInput(ClientInput input)
         {
-            moveInput = transform.right * input.Horizontal + transform.forward * input.Vertical;
+            move = input.Horizontal * transform.right + input.Vertical * transform.forward;
+            yaw = input.Yaw;
             pressedJump = input.Jump;
         }
 
@@ -53,7 +60,7 @@ namespace Black.ClientSidePrediction.Example
         {
             var state = new ServerResult
             {
-                Position = transform.position,
+                Position = transform.localPosition,
                 Velocity = velocity,
                 IsGrounded = isGrounded
             };
@@ -63,9 +70,9 @@ namespace Black.ClientSidePrediction.Example
 
         protected override void SetResult(ServerResult result)
         {
-            controller.enabled = false;
-            transform.position = result.Position;
-            controller.enabled = true;
+            cc.enabled = false;
+            transform.localPosition = result.Position;
+            cc.enabled = true;
 
             velocity = result.Velocity;
             isGrounded = result.IsGrounded;
@@ -73,17 +80,19 @@ namespace Black.ClientSidePrediction.Example
 
         public override void ApplyMovement()
         {
+            transform.localRotation = Quaternion.Euler(transform.localEulerAngles.x, yaw, transform.localEulerAngles.z);
+
             isGrounded = Physics.CheckSphere(transform.localPosition, groundDistance, groundLayer);
 
             if (pressedJump && isGrounded)
             {
-                velocity.y = jump;
+                velocity.y = jumpSpeed;
             }
 
             velocity.y += gravity * Time.fixedDeltaTime;
-            velocity = new Vector3(moveInput.x * speed, velocity.y, moveInput.z * speed);
+            velocity = new Vector3(move.x * moveSpeed, velocity.y, move.z * moveSpeed);
 
-            controller.Move(velocity * Time.fixedDeltaTime);
+            cc.Move(velocity * Time.fixedDeltaTime);
         }
     }
 }

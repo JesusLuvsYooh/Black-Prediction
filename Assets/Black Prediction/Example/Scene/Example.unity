@@ -51,7 +51,7 @@ LightmapSettings:
     m_IndirectOutputScale: 1
     m_AlbedoBoost: 1
     m_EnvironmentLightingMode: 0
-    m_EnableBakedLightmaps: 1
+    m_EnableBakedLightmaps: 0
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
     serializedVersion: 12
@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 84e724e922e764545a090a01e47f19cb,
+  m_LightingDataAsset: {fileID: 112000000, guid: bc680acd6dafb004591452ae76767c4b,
     type: 2}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -149,7 +149,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 27687472}
   m_LocalRotation: {x: -0.3470026, y: -0.47932464, z: -0.21400814, w: 0.7771985}
-  m_LocalPosition: {x: 2, y: 0, z: 14.8}
+  m_LocalPosition: {x: 2.34, y: -0.42, z: 14.63}
   m_LocalScale: {x: 13.8105, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 1190036912}
@@ -332,10 +332,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wrap: {fileID: 221458102}
   latencySpikeMultiplier: 0.02
-  latencySpikeSpeedMultiplier: 0.2
-  reliableLatency: 0.2
+  latencySpikeSpeedMultiplier: 2
+  reliableLatency: 0.1
   unreliableLoss: 0.02
-  unreliableLatency: 0.2
+  unreliableLatency: 0.1
   unreliableScramble: 0.02
 --- !u!1 &266840868
 GameObject:
@@ -395,13 +395,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 471492445}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 14.4, y: 5, z: 19.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 266840869}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &471492447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -538,7 +538,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 710713267}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f8650fd45ff86c4297f1e5143778d90, type: 3}
+  m_Script: {fileID: 11500000, guid: dd1384219a2728b46b111275a3402f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
@@ -556,7 +556,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneId: 769305394
+  sceneId: 2940202895
   serverOnly: 0
   visible: 0
   m_AssetId: 
@@ -585,13 +585,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 762206756}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: -15.7, y: 5, z: 19.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 266840869}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &762206758
 MonoBehaviour:
   m_ObjectHideFlags: 0
