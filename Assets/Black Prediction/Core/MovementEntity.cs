@@ -11,6 +11,9 @@ namespace Black.ClientSidePrediction
         [SerializeField] private byte defaultBuffer = 2;
         [SerializeField] private byte bufferSpeed = 5;
 
+        private float nextUpdate;
+        private float updateRate = 0.016f;
+
         private ulong currentFrame;
         private ClientInput currentInput;
         private ServerResult currentResult;
@@ -38,7 +41,17 @@ namespace Black.ClientSidePrediction
             }
         }
 
-        protected virtual void FixedUpdate()
+        protected virtual void Update()
+        {
+            if (Time.time >= nextUpdate)
+            {
+                nextUpdate = Time.time + updateRate;
+
+                Run();
+            }
+        }
+
+        private void Run()
         {
             if (!hasAuthority || MovementSimulation.Instance == null)
             {
@@ -74,15 +87,15 @@ namespace Black.ClientSidePrediction
 
             if (currentResult.Buffer > targetBuffer)
             {
-                BlackUtility.ApplyFixedTimestep(updateRate - bufferSpeed);
+                this.updateRate = 0.022f;
             }
             else if (currentResult.Buffer < targetBuffer)
             {
-                BlackUtility.ApplyFixedTimestep(updateRate + bufferSpeed);
+                this.updateRate = 0.012f;
             }
             else
             {
-                BlackUtility.ApplyFixedTimestep(updateRate);
+                this.updateRate = 0.016f;
             }
         }
 
