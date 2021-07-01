@@ -29,8 +29,7 @@ Download Unity Package: https://github.com/bluejayboy/Black-Prediction/releases
 - Create a build and test how it works.
 
 # To Do
-- Fix input buffer/camera rotation reconciliation.
-- Make input buffer run on custom timer and sync properly to desired buffer count.
+- Fix camera rotation reconciliation.
 - Add Rigidbody/KCC example.
 - Add editor helper so the user does not need to edit the scripts directly. 
 - Add interpolation for reconciliation.
