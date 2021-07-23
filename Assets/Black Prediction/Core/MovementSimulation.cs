@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
-using Black.Utility;
 
 namespace Black.ClientSidePrediction
 {
@@ -20,7 +19,7 @@ namespace Black.ClientSidePrediction
         {
             Instance = this;
 
-            BlackUtility.ApplyFixedTimestep(updateRate);
+            Time.fixedDeltaTime = 1.0f / updateRate;
         }
 
         [ServerCallback]
