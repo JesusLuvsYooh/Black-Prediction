@@ -28,6 +28,13 @@ Download Unity Package: https://github.com/bluejayboy/Black-Prediction/releases
 - Create a new GameObject in your game scene with NetworkIdentity and MovementSimulation.cs script attached to it.
 - Create a build and test how it works.
 
+#KCC
+- Delete OnEnable and OnDisable from KinematicCharacterMotor.cs
+- Open up KinematicCharacterSystem.cs
+- Delete "if (Settings.AutoSimulation)" inside "FixedUpdate"
+- Change "FixedUpdate" to "public static void Simulate()"
+
+
 # To Do
 - Fix camera rotation reconciliation.
 - Add Rigidbody/KCC example.
