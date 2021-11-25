@@ -1,7 +1,10 @@
+This original owner has unexpectdly deleted the master project, this is a fork.
+Although they did create this for anyone to use and modify, be aware no licence is present in the github.
+
 # Black Prediction
 This is a client side prediction and server reconciliation plugin for Mirror. It is a completely server authoritative movement solution.
 
-Download Unity Package: https://github.com/bluejayboy/Black-Prediction/releases
+Download Unity Package: -link temporarily removed-
 
 # Feature
 - Client side prediction.
@@ -42,3 +45,18 @@ Download Unity Package: https://github.com/bluejayboy/Black-Prediction/releases
 - Add interpolation for reconciliation.
 - Add performance checks to save bandwidth.
 - Support non-mirror networking solutions.
+
+# Video Previews
+Here you can see the client trying to speed cheat (right), and to the other player everything is displayed normally (left).
+The cheater keeps getting pinged back into correct position.
+https://user-images.githubusercontent.com/57072365/143479914-3a7db021-4e72-49c9-86f4-3ef0c813ee6d.mp4
+
+
+Same as above, however bad network conditions (latency/ping/lag) is simulated ontop.
+Everything to the viewing player (left) continues as normal  :)
+https://user-images.githubusercontent.com/57072365/143480081-3bf8f723-b101-4987-8a80-54fcaaf1eac3.mp4
+
+
+
+
+
