@@ -1,4 +1,4 @@
-This original owner has unexpectdly deleted the master project, this is a fork.
+This original owner has unexpectdly deleted the master project, this is a fork.  
 Although they did create this for anyone to use and modify, be aware no licence is present in the github.
 
 # Black Prediction
@@ -47,13 +47,13 @@ Download Unity Package: -link temporarily removed-
 - Support non-mirror networking solutions.
 
 # Video Previews
-Here you can see the client trying to speed cheat (right), and to the other player everything is displayed normally (left).
-The cheater keeps getting pinged back into correct position.
+- Here you can see the client trying to speed cheat (right), and to the other player everything is displayed normally (left).  
+The cheater keeps getting pinged back into correct position.  
 https://user-images.githubusercontent.com/57072365/143479914-3a7db021-4e72-49c9-86f4-3ef0c813ee6d.mp4
 
 
-Same as above, however bad network conditions (latency/ping/lag) is simulated ontop.
-Everything to the viewing player (left) continues as normal  :)
+- Same as above, however bad network conditions (latency/ping/lag) is simulated ontop.  
+Everything to the viewing player (left) continues as normal  :)  
 https://user-images.githubusercontent.com/57072365/143480081-3bf8f723-b101-4987-8a80-54fcaaf1eac3.mp4
 
 
